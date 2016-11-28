@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Backbone from 'backbone';
 
 var taskData = [
   {
@@ -13,6 +14,27 @@ var taskData = [
   }
 ];
 
+// We pass in an object to the function that contains multiple functions (initialize
+// and render)
+
+var TaskView = Backbone.View.extend({
+  initialize: function(options){
+    this.task = options.task;
+  },
+  render: function(){
+    var html = "<li class=task>";
+    html += "<h2>" + this.task.title + "</h2>";
+    html += "<p>" + this.task.description + "</p>";
+    html += "</li>";
+    this.$el.html(html);
+
+    return this;
+  }
+});
+
 $(document).ready(function() {
-  $('#test-area').append($('<p>Hello World!</p>'));
+  for (var i = 0; i < taskData.length; i++){
+    var currentTask = new TaskView({task: taskData[i]});
+    $('.task-list').append(currentTask.render().$el);
+  }
 });
